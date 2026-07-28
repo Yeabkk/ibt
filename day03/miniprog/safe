@@ -1,0 +1,19 @@
+try:
+    
+    number = float(input("Enter a number to divide 1000 by: "))    
+    
+    result = 1000 / number
+   
+    print(f"1000 ÷ {number} = {result:.2f}")
+
+except ValueError:
+    print(f"\n '{user_input}' is not a valid number!")
+    print("  Please enter a number (e.g., 5, 10, 2.5)")
+
+except ZeroDivisionError:
+    print(f"\n Cannot divide by zero!")
+    print("  Please enter a number other than 0")
+else:
+	print(result)
+finally:
+	print("Done")

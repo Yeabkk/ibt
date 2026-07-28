@@ -1,0 +1,625 @@
+		
+				Terimanl
+	Terimnal is a text interface to computer.some of the commands are:
+pwd,ls,ls -la,cd ...,
+
+mkdir ,touch ,cat , less ,nano
+
+cp ,mv ,rm
+
+clear ,history ,man ,ctrl + c
+
+				Git
+	Git is a distriboution version control system.git is a tool,gihub is a websitethat hosts git respositers online.
+git commands:
+
+git init
+git status
+git add .  //to add all
+git add *.js //to add aspisfic file
+git commit -m "..."
+git commit -am "..."   //to commit and add at the same time
+git log --oneline
+git diff
+.gitignore is a file we use if we dont want git to track some files
+			
+				GitHub
+to connect to github there is two ways
+-ssh keys
+-personal access token
+
+	To connect a local repo creat an empty respotery on github then link it as origin(nickname)
+the command
+git remot add origin <repo-url>
+git remote -v //verify the link
+git push -u origin main	//first push sets the default
+
+git clone <respority-url>
+
+	To put it simply this is a git daily git workflow
+1.git pull
+ ,git pull --rebase origin main  //rebase insted of merge
+2...work..
+3.git add .
+4.git commit -m "..."
+5.git push
+ .git push origin main //to push to main branch
+ 
+(pull,work,add,commit,push)
+
+day01 exersi
+
+Steps
+1. Set up your identity once (if you haven't): git config --global user.name "…" and user.email.
+2. From the terminal, make and enter the project: mkdir codeops-portfolio && cd codeops-
+portfolio.
+3. Initialise the repo with git init and confirm with git status.
+4. Create a README.md with a heading, one sentence on what the repo is for, and your name.
+Commit it.
+5. Add a .gitignore (use the example in Part 2). Commit it as a separate, clearly-messaged
+commit.
+6. Make a day01/ folder with a notes.md listing five terminal commands and three Git commands
+in your own words. Commit it.
+7. Create an empty codeops-portfolio repo on GitHub, add it as origin, and git push
+
+8. Refresh the GitHub page and confirm your README, .gitignore, and day01 folder are all there.
+
+
+			Additions
+
+git branch  //list local branch
+git branch -a //list all branch remote and local
+git branch <...>	//creat new branch
+git branch -d <...>	//delete a branch
+git branch -D <...>	//forsed delete
+git branch -m <old> <...>
+
+
+git checkout <...>	//switch to branch
+git checkout -b <...>  //create and switch to new branch
+git checkout -- <...> //discred changeds to a file
+
+git merge <...>
+
+git rebase <...> //re-apply commit on top of another commit(rerite history)
+
+git log                             # Show all commits
+git log -n 5                        # Show last 5 commits
+git log --oneline                   # Compact format
+git log --graph --all --decorate    # Visual branch graph
+git log --author="name"             # Filter by author
+git log --since="2 weeks ago"       # Filter by date
+git log <file>                      # History of specific file
+
+
+git diff                            # Changes in working directory
+git diff --staged                   # Changes in staging area
+git diff <branch1> <branch2>        # Differences between branches
+git diff <commit1> <commit2>        # Differences between commits
+git diff <file>                     # Changes to specific file
+
+
+git stash                           # Save current changes
+git stash list                      # List all stashes
+git stash pop                       # Apply most recent stash
+git stash apply stash@{0}           # Apply specific stash
+git stash drop stash@{0}            # Delete a stash
+git stash clear                     # Delete all stashes
+
+git reset <file>                    # Unstage a file
+git reset HEAD~1                    # Undo last commit (keep changes)
+git reset --soft HEAD~1             # Undo commit, keep changes staged
+git reset --hard HEAD~1             # Undo commit, discard changes
+git reset --hard <commit>           # Reset to specific commit
+
+-Reset Types:
+
+    --soft: Keeps changes staged
+    --mixed (default): Keeps changes unstaged
+    --hard: Discards all changes
+
+
+git revert <commit> //creat new commit that undo a previus commit
+
+Creates named references to specific commits (usually for releases).
+git tag <tag-name>                  # Create lightweight tag
+git tag -a <tag-name> -m "message"  # Create annotated tag
+git tag -l                          # List all tags
+git push origin <tag-name>          # Push tag to remote
+git push origin --tags              # Push all tags
+git tag -d <tag-name>               # Delete local tag
+
+
+Manages remote repository connections.
+git remote                          # List remotes
+git remote -v                       # List remotes with URLs
+git remote add <name> <url>         # Add new remote
+git remote remove <name>            # Remove remote
+git remote rename <old> <new>       # Rename remote
+git remote show <name>              # Show remote details
+
+
+Downloads remote changes without merging them
+git fetch                           # Fetch from all remotes
+git fetch <remote>                  # Fetch from specific remote
+git fetch <remote> <branch>         # Fetch specific branch
+
+Applies specific commits from one branch to another.
+git cherry-pick <commit>
+git cherry-pick <commit1> <commit2>
+git cherry-pick --continue           # After resolving conflicts
+git cherry-pick --abort              # Cancel cherry-pick
+
+
+advanc example 
+
+
+# 1. Create and switch to feature branch
+git checkout -b feature/new-feature
+
+# 2. Make changes and commit
+echo "new feature" > feature.js
+git add feature.js
+git commit -m "Add new feature"
+
+# 3. Make more changes
+echo "improvement" >> feature.js
+git add feature.js
+git commit -m "Improve feature"
+
+# 4. Interactive rebase to clean up commits
+git rebase -i HEAD~2
+
+# 5. Switch to main and pull latest
+git checkout main
+git pull origin main
+
+# 6. Rebase feature on main
+git checkout feature/new-feature
+git rebase main
+
+# 7. Merge feature into main
+git checkout main
+git merge feature/new-feature
+
+# 8. Push to remote
+git push origin main
+
+# 9. Delete feature branch
+git branch -d feature/new-feature
+git push origin --delete feature/new-feature
+
+# 10. Tag release
+git tag -a v1.0.0 -m "Release version 1.0.0"
+git push origin v1.0.0
+
+		
+
+			Initial Setup to connect to github
+
+-Go to github.com
+-Click Sign up
+-Enter your email, create a password, and choose a username
+-Verify your email address
+-Complete the setup wizard
+
+
+then 
+
+# Set your name (used in commits)
+git config --global user.name "Your Name"
+
+# Set your email (should match GitHub email)
+git config --global user.email "your-email@example.com"
+
+# Verify configuration
+git config --global --list
+
+
+			Authentication Methods
+
+
+There are two primary ways to authenticate with GitHub:
+Method 1: SSH (Recommended)
+
+SSH uses public-key cryptography for secure authentication.
+Step 1: Generate SSH Key
+
+# Generate a new SSH key
+ssh-keygen -t ed25519 -C "your-email@example.com"
+
+What this does:
+
+    -t ed25519: Uses the modern Ed25519 algorithm (more secure)
+    -C: Adds a comment (usually your email)
+
+
+$ ssh-keygen -t ed25519 -C "john.doe@example.com"
+
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/Users/username/.ssh/id_ed25519): [Press Enter]
+Enter passphrase (empty for no passphrase): [Type a secure passphrase or press Enter]
+Enter same passphrase again: [Retype passphrase]
+
+Your identification has been saved in /Users/username/.ssh/id_ed25519.
+Your public key has been saved in /Users/username/.ssh/id_ed25519.pub.
+
+
+Step 2: Add SSH Key to SSH Agent
+
+# Start SSH agent
+eval $(ssh-agent -s)
+
+# Add your SSH key
+ssh-add ~/.ssh/id_ed25519
+
+$ eval "$(ssh-agent -s)"
+Agent pid 12345
+
+$ ssh-add ~/.ssh/id_ed25519
+Identity added: /Users/username/.ssh/id_ed25519 (john.doe@example.com)
+
+Step 3: Copy Public Key to Clipboard
+
+
+cat ~/.ssh/id_ed25519.pub | clip
+
+Step 4: Add SSH Key to GitHub
+
+    Go to GitHub → Click your profile icon (top right) → Settings
+    Click SSH and GPG keys (left sidebar)
+    Click New SSH key button
+    In the "Title" field, enter a descriptive name (e.g., "MacBook Pro")
+    In the "Key" field, paste your public key (Ctrl+V or Cmd+V)
+    Click Add SSH key
+
+Step 5: Test SSH Connection
+
+ssh -T git@github.com
+
+execpted out put 
+
+Hi username! You've successfully authenticated, but GitHub does not provide shell access.
+
+
+
+Method 2: HTTPS with Personal Access Token (PAT)
+
+HTTPS is easier for beginners but requires a Personal Access Token for authentication.
+Step 1: Create a Personal Access Token on GitHub
+
+    Go to GitHub → Click your profile icon → Settings
+    Click Developer settings (bottom of left sidebar)
+    Click Personal access tokens → Tokens (classic)
+    Click Generate new token → Generate new token (classic)
+
+Step 2: Configure Token Settings
+
+Token name: "My Git Token" or descriptive name
+Expiration: Select 30, 60, 90 days, 1 year, or No expiration
+Select scopes (permissions):
+  ☑ repo (Full control of private repositories)
+  ☑ workflow (Update GitHub Action workflows)
+  ☑ admin:public_key (Manage public keys)
+
+
+example 
+Token name: MacBook Git Access
+Expiration: 90 days
+Scopes: repo, workflow
+
+
+    Click Generate token
+    Copy the token immediately (you won't see it again!)
+
+Step 3: Store Token Securely
+
+Option A: Use Git Credential Manager (Recommended)
+
+# On macOS:
+brew install git-credential-manager
+
+# On Windows (comes with Git for Windows):
+# Already installed
+
+# Configure Git to use credential manager
+git config --global credential.helper manager-core
+
+Option B: Store in Local Config
+
+# Create a file to store credentials (not recommended for production)
+nano ~/.git-credentials
+
+# Add this line:
+https://username:YOUR_TOKEN@github.com
+
+# Set proper permissions
+chmod 600 ~/.git-credentials
+
+# Configure Git to use this file
+git config --global credential.helper store
+
+Step 4: Test HTTPS Connection
+
+git clone https://github.com/YOUR_USERNAME/test-repo.git
+# When prompted, use your username and the PAT as password
+
+
+
+Part 3: Connecting Your Repository to GitHub
+Method A: Create a New Repository on GitHub, Then Clone
+Step 1: Create Repository on GitHub
+
+    Go to github.com/new
+    Enter repository name (e.g., my-project)
+    Add description (optional)
+    Choose Public or Private
+    Click Create repository
+
+Step 2: Clone the Repository Locally
+
+Using SSH:
+
+git clone git@github.com:YOUR_USERNAME/my-project.git
+cd my-project
+
+using https
+
+git clone https://github.com/YOUR_USERNAME/my-project.git
+cd my-project
+
+example
+$ git clone git@github.com:johndoe/my-project.git
+Cloning into 'my-project'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Receiving objects: 100% (3/3), 160 bytes, done.
+
+$ cd my-project
+$ ls -la
+total 8
+-rw-r--r--  README.md
+-rw-r--r--  .gitignore
+drwxr-xr-x  .git
+
+step 3: add fils and push
+
+# Create or add files
+echo "# My Project" > README.md
+
+# Stage files
+git add README.md
+
+# Commit
+git commit -m "Initial commit"
+
+# Push to GitHub
+git push -u origin main
+
+Method B: Push an Existing Local Repository to GitHub
+Step 1: Create Empty Repository on GitHub (No README)
+
+    Go to github.com/new
+    Enter repository name
+    Do NOT initialize with README, .gitignore, or license
+    Click Create repository
+
+Step 2: Connect Local Repository to GitHub
+
+Using SSH:
+
+git remote add origin git@github.com:YOUR_USERNAME/my-project.git
+
+using https:
+
+git remote add origin https://github.com/YOUR_USERNAME/my-project.git
+
+
+Step 3: Verify Remote Connection
+
+git remote -v
+
+example:
+origin  git@github.com:johndoe/my-project.git (fetch)
+origin  git@github.com:johndoe/my-project.git (push)
+
+step 4:push local commit to github
+
+# Push and set upstream tracking
+git push -u origin main
+
+# Or if your default branch is master:
+git push -u origin master
+
+
+example:
+
+$ git push -u origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (5/5), 480 bytes | 480.00 KiB/s, done.
+Total 5 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:johndoe/my-project.git
+ * [new branch]      main -> main
+Branch 'main' set up to track 'origin/main'.
+
+Part 3: Common Connection Issues & Solutions
+Issue 1: SSH Key Permission Denied
+
+Error:
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+solution:
+# Check if SSH key exists
+ls -la ~/.ssh/
+
+# If not, generate a new one
+ssh-keygen -t ed25519 -C "your-email@example.com"
+
+# Verify SSH key is added to agent
+ssh-add ~/.ssh/id_ed25519
+
+# Test connection
+ssh -T git@github.com
+
+
+Issue 2: Repository Not Found
+
+Error:
+
+fatal: repository 'https://github.com/username/repo.git' not found
+
+soln:
+
+# Verify remote URL is correct
+git remote -v
+
+# Update if wrong
+git remote set-url origin https://github.com/CORRECT_USERNAME/repo.git
+
+# Test with SSH instead
+git remote set-url origin git@github.com:username/repo.git
+
+
+Issue 3: Token Expired (HTTPS)
+
+Error:
+
+fatal: Authentication failed for 'https://github.com/...'
+
+soln:
+
+# Generate a new Personal Access Token on GitHub
+# Then clear stored credentials
+
+# On macOS/Linux:
+git credential-manager uncache https://github.com
+
+# On Windows:
+git credential-manager remove
+
+# Next push will prompt for new credentials
+git push origin main
+
+Issue 4: Wrong User Configured
+
+Error: Commits show wrong author
+
+Solution:
+
+# Check current configuration
+git config --global user.name
+git config --global user.email
+
+# Update if needed
+git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"
+
+# Or configure for specific repository
+cd /path/to/repo
+git config user.name "Your Name"
+git config user.email "your-email@example.com"
+
+
+
+Part 4: Complete Connection Workflow
+
+Here's the complete step-by-step process from start to finish:
+For New Project
+
+
+# 1. Create project directory
+mkdir my-project
+cd my-project
+
+# 2. Initialize Git
+git init
+
+# 3. Configure user
+git config user.name "John Doe"
+git config user.email "john.doe@example.com"
+
+# 4. Create initial files
+echo "# My Project" > README.md
+echo "node_modules/" > .gitignore
+
+# 5. Stage and commit
+git add .
+git commit -m "Initial commit"
+
+# 6. Create repository on GitHub (via web interface)
+# Then add remote:
+git remote add origin git@github.com:johndoe/my-project.git
+
+# 7. Push to GitHub
+git push -u origin main
+
+# 8. Verify
+git remote -v
+
+
+for existing github resporty:
+
+
+# 1. Clone repository
+git clone git@github.com:johndoe/my-project.git
+cd my-project
+
+# 2. Verify remote
+git remote -v
+
+# 3. Make changes
+echo "New feature" > feature.js
+
+# 4. Stage and commit
+git add feature.js
+git commit -m "Add new feature"
+
+# 5. Push changes
+git push origin main
+
+# 6. Pull latest changes from team
+git pull origin main
+
+
+
+Part 5: Best Practices for GitHub Connection
+Practice	Description
+Use SSH	More secure than HTTPS, no need to enter credentials repeatedly
+Protect Keys	Never share private SSH keys; use strong passphrases
+Rotate Tokens	Refresh PATs regularly; set expiration dates
+Use Credential Manager	Don't store passwords in plain text
+Verify Host Key	First SSH connection will ask to verify fingerprint—check it matches GitHub's
+Configure User Info	Always set proper name/email for commits
+Multiple Machines	Generate unique SSH keys for each computer
+Keep Keys Safe	Back up SSH keys securely; don't commit .ssh folder
+
+
+refernce:
+
+
+# SSH Setup
+ssh-keygen -t ed25519 -C "email@example.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+# Then add public key to GitHub
+
+# Git Configuration
+git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"
+
+# Create and Connect Repository
+git init
+git remote add origin git@github.com:username/repo.git
+git add .
+git commit -m "Initial commit"
+git push -u origin main
+
+# Clone Existing Repository
+git clone git@github.com:username/repo.git
+
+# Test Connection
+ssh -T git@github.com
+git remote -v

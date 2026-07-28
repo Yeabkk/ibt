@@ -1,0 +1,42 @@
+
+				Exercises
+		Work through these in a file called day03/practice.py. Run each one and check the output before
+	moving on.
+
+
+1. Unique cities. Given a list with repeated city names, use a set to print the distinct cities, then
+the count.
+
+2. Price report. Make a dictionary of five grocery items and prices in ETB. Loop with .items() to
+print each on its own line.
+
+3. Tax comprehension. Given prices = [100, 250, 400, 80], use one comprehension to build
+a list with 15% tax added.
+
+4. Cheap items. From the same list, use a comprehension with a condition to keep only prices
+under 200.
+
+5. Write & read. Write three customer names to names.txt, then open it and print each name
+back, one per line.
+
+6. Safe division. Ask the user for a number and divide 1000 by it, catching both ValueError and
+ZeroDivisionError
+
+
+------------------------------------------------------
+
+Mini-Project — Pharmacy Inventory Tracker
+Ships with this reading. This brings the whole day together — a dictionary of stock, file
+reading and writing, a loop, and error handling — in one small program. Build it on your own
+machine and push it to your day03 folder before Day 4.
+
+What you will build
+A program inventory.py for a small Addis Ababa pharmacy that loads stock from a file into a
+dictionary, lets you update quantities, reports low-stock items, and saves the updated stock back to
+the file.
+Requirements
+• Read stock.txt (one item,quantity per line) into a dictionary, inside a try / except for a
+missing file.
+• Add a function that increases or decreases an item's quantity by a given amount.
+• Use a comprehension or loop to print every item where the quantity is below 10 (low stock).
+• Write the updated dictionary back to stock.txt so the changes persist.

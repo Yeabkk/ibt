@@ -1,0 +1,7 @@
+cities = ["Addis Ababa", "Dire Dawa", "Addis Ababa", "Hawassa", 
+          "Dire Dawa", "Addis Ababa", "Hawassa", "Adama"]
+unique_cities = set(cities)
+
+for city in unique_cities:
+	print(f"Cities: {city}")
+print(f"\nTotal unique cities: {len(unique_cities)}")

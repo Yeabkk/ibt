@@ -1,0 +1,18 @@
+
+grocery_prices = {
+    "Teff": 45.00,
+    "Injera": 15.50,
+    "Mitmita": 8.75,
+    "Honey": 120.00,
+    "Coffee": 35.25
+}
+
+print("Grocery Price Report (Prices in ETB)")
+
+for item, price in grocery_prices.items():
+    print(f"{item:.<30} ETB {price:>8.2f}")
+
+
+total = sum(grocery_prices.values())
+
+print(f"{'TOTAL':.<30} ETB {total:>8.2f}")

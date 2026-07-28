@@ -1,0 +1,12 @@
+
+			Exercises
+	Work through these in a file called day04/practice.py. Run each one and check the output before
+moving on.
+1. Book class. Define Book with title, author, and pages. Add a describe() method that prints a
+one-line summary. Create two books.
+2. Product class. Define Product with name, price (ETB), and quantity. Add restock(n) and
+sell(n) methods that change the quantity.
+3. Make it private. Change quantity to a private __quantity and add a @property getter for it.
+4. Validate. Add a setter (or guard in sell) that refuses to let the quantity go below zero.
+5. Prove independence. Create three Product objects, change one, and show the other two are
+unaffected.
