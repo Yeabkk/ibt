@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Module 2 - Day 2</title>
+  </head>
+  <body>
+    <header>
+      <h1>Module 2 - Day 2 Class Exercise</h1>
+      <nav>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="services.html">Services</a>
+        <a href="help.html">Help</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>Reservation Form</h2>
+        <form action="about.html" method="post">
+          <fieldset>
+            <legend>Personal Info</legend>
+            <label for="nm">Full Name : </label>
+            <input id="nm" type="text" placeholder="Write Your Name" required />
+            <br />
+            <label for="gn">Gender</label>
+            <input id="gn" type="radio" name="gender" value="male" /> Male
+            <input id="gn" type="radio" name="gender" value="female" /> Female
+            <br />
+            <label for="ph">Phone No : </label>
+            <input id="ph" type="tel" pattern="09[0-9]{8}" />
+            <br />
+            <label for="em">Email : </label>
+            <input
+              id="em"
+              type="email"
+              placeholder="Write Your Email"
+              required
+            />
+          </fieldset>
+          <fieldset>
+            <legend>Reservation Info</legend>
+            <label for="ar">Select Your Area : </label>
+            <select id="ar">
+              <option>Bole</option>
+              <option>Megenagna</option>
+              <option>Piassa</option>
+              <option>Merkato</option>
+            </select>
+          </fieldset>
+          <input type="submit" value="Reserve" />
+        </form>
+      </section>
+      <section>
+        <h2>My Table</h2>
+        <table border="">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Phone</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Abebe</td>
+              <td>Male</td>
+              <td>0912345678</td>
+              <td>abebe@example.com</td>
+            </tr>
+            <tr>
+              <td>Kebede</td>
+              <td>Male</td>
+              <td>0917855678</td>
+              <td>kebede@example.com</td>
+            </tr>
+            <tr>
+              <td>Almaz</td>
+              <td>Female</td>
+              <td>0956543678</td>
+              <td>almaz@example.com</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h2>Multimedia</h2>
+        <img
+          width="350"
+          height="150"
+          src="etImage.jpg"
+          alt="This is an image taken from ET site."
+        />
+        <video width="350" height="150" controls>
+          <source src="etVideo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50072.3866755684!2d38.84210183400357!3d8.967013211721559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2set!4v1785525180579!5m2!1sen!2set"
+          width="350"
+          height="150"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </section>
+    </main>
+    <footer></footer>
+  </body>
+</html>
