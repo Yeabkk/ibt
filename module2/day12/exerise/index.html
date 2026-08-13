@@ -15,7 +15,7 @@
         </nav>
     </header>
     <main>
-        <form>
+        <form action="" method="post">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
 
@@ -26,18 +26,20 @@
             <label for="location-type">Room Type:</label>
             <select id="location-type" name="room-type" required>
                 <option value="">Select branch</option>
-                <option value="single">Bole</option>
-                <option value="double">Kazanchis</option>
-                <option value="suite">Piassa</option>
+                <option value="kazanchis">Kazanchis</option>
+                <option value="piassa">Piassa</option>
+                <option value="bole">Bole</option>
             </select>
             <input type="submit" value="Submit">
 
         </form>
         <table>
             <thead>
+                <caption>Flight Schedule</caption>
                 <tr>
                     <th>Flight</th>
                     <th>From</th>
+                    <th>To</th>
                     <th>Departure</th>
                     <th>Price</th>
                 </tr>
@@ -46,23 +48,40 @@
                 <tr>
                     <td>101</td>
                     <td>Addis Ababa</td>
+                    <td>Dire Dawa</td>
                     <td>08:00 AM</td>
                     <td>100ETB</td>
                 </tr>
                 <tr>
                     <td>102</td>
                     <td>Adama</td>
+                    <td>Hawassa</td>
                     <td>09:00 AM</td>
                     <td>120ETB</td>
                 </tr>
                 <tr>
                     <td>103</td>
                     <td>Jimma</td>
-                    <td>10:00 AM</td>
+                    <td>Gondar</td>
+                    <td>10:00 AM</td>       
                     <td>140ETB</td>
                 </tr>
             </tbody>
         </table>
+
+        <section>
+            <h2>Explore Addis Ababa</h2>
+            <figure>
+                <img src="../etImage.jpg" alt="Amesument park" width="600" height="400">
+                <figcaption>Amesument park.</figcaption>
+            </figure>
+            <iframe
+                src="https://www.openstreetmap.org/export/embed.html?bbox=38.7250%2C9.0000%2C38.7900%2C9.0600&amp;layer=mapnik&amp;marker=9.0320%2C38.7469"
+                title="Map of Addis Ababa, Ethiopia"
+                width="600" height="450" loading="lazy">
+            </iframe>
+        </section>
+        
     </main>
 </body>
 </html>
