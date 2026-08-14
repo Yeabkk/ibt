@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini-project</title>
+</head>
+<body>
+    <h1>What you will build</h1>
+    <p>A small report generator over a list of TeleBirr transactions for an Addis shop. Each transaction is an
+object; you summarise and format them using the array methods and modern syntax from today,
+with the logic split into reusable modules.</p>
+    <h2>Requirements</h2>
+    <ul>
+        <li>Model each transaction as an object: { id, customer, amount, type } where type is "credit" or
+"debit" and amount is in ETB.</li>
+        <li>Use filter to separate credits from debits, and reduce to total each.</li>
+        <li>Use map with destructuring in the callback ({ customer, amount }) to build a list of formatted
+receipt strings.</li>
+        <li>Use spread to produce an updated copy of one transaction (e.g. correcting an amount) without
+mutating the original.</li>
+        <li> Split the code into modules: a transactions.js exporting the data, a report.js exporting the
+summary functions, and an app.js that imports both and prints the report.</li>
+    </ul>
+</body>
+<script src="app.js"></script>
+</html>
