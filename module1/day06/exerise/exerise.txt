@@ -1,0 +1,13 @@
+Exercises
+Work through these in a file called day06/practice.py. Run each one and check the output before
+moving on.
+1. Spot the SRP violation. Take a Report class that builds, saves, and emails a report. Split it
+into three focused classes.
+2. Refactor to OCP. Replace an if/elif that prints a shape's area by shape type with a small
+class hierarchy and one method.
+3. Write a Singleton. Build an AppSettings Singleton holding a currency ("ETB") and confirm two
+instances are the same object.
+4. Write a Factory. Create a ShapeFactory.create(kind) that returns a Circle, Square, or
+Triangle.
+5. Write an Observer pair. Make a NewsAgency subject and two subscriber classes that print when
+notified.
