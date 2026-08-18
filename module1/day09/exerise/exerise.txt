@@ -1,0 +1,12 @@
+# Exercises
+# Work through these in a file called day09/practice.py. Run each one and check the output before
+# moving on.
+# 1. Build a BST. Write a Node class and an insert(root, value) function. Insert several balances,
+# then print them with an in-order traversal — they should come out sorted.
+# 2. Tree depth. Write a recursive height(node) that returns the depth of a binary tree.
+# 3. Graph BFS. Given an adjacency-list graph, implement bfs(graph, start) and return the set of
+# reachable vertices.
+# 4. Graph DFS. Implement dfs(graph, start) recursively, and compare the visit order with your
+# BFS.
+# 5. Priority queue. Use heapq to push five (priority, task) tuples in mixed order, then pop them all
+# — they should come out by priority.
