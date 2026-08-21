@@ -1,35 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+</head>
+<body>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <h1>Currency Converter</h1>
 
-    <title>Birr Watch</title>
+    <!-- Messages like Loading or Error -->
+    <p id="status"></p>
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
-
-  <body>
-    <h1>Birr Watch</h1>
+    <!-- Conversion form -->
     <form id="convert-form">
-      <input id="amount" type="number" value="100" placeholder="Enter amount" />
+        <input
+            id="amount"
+            type="number"
+            placeholder="Enter amount"
+        >
 
-      <select id="currency"></select>
+        <select id="currency">
+            <!-- JavaScript will add currencies here -->
+        </select>
 
-      <button type="submit">Convert</button>
+        <button type="submit">Convert</button>
     </form>
 
+    <!-- Conversion result -->
     <p id="result"></p>
 
     <h2>Watchlist</h2>
 
-    <button id="add-watch" type="button">Add to Watchlist</button>
+    <button id="add-watch">Add to Watchlist</button>
 
-    <ul id="watchlist"></ul>
-
-    <p id="status"></p>
+    <ul id="watchlist">
+        <!-- JavaScript will add currencies here -->
+    </ul>
 
     <script src="app.js"></script>
-  </body>
+</body>
 </html>
