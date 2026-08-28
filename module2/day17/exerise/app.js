@@ -9,21 +9,34 @@
     // Apply both to a price of 1000 ETB.
     // 4. Write a higher-order applyToAll(list, fn) that runs fn over every item and returns the results, then
     // use it to add VAT to an array of prices.
-    // 5. Use forEach (a callback)
+    // 5. Use forEach (a callback) to print each Ethiopian city in an array with its index, e.g. "1. Addis
+    //Ababa".
 
 
 //q1
 function vat(amount, rate = 0.15) {
     return amount * (1 + rate);
 }
-
 console.log(vat(1000));
 console.log(vat(1000, 0.20));
-//q2
+//q1.1
 
 const vatArrow = (amount, rate = 0.15) => amount * (1 + rate);
+console.log(vatArrow(100));
+//2
+function makeCounter() {
+let count = 0;   // private
+return () => ++count;
+}
+const next = makeCounter();
+next(); 
+next();
+next(); 
+next();
+next(); 
+next();
+//because let is not univerisal it is block(it just in the function)
 
-console.log(vatArrow(1000));
 
 //q3
 
@@ -61,8 +74,8 @@ const pricesWithVAT = applyToAll(
 console.log(pricesWithVAT);
 //q5
 
-const prices = [100, 500, 1000];
+const cities = ['Addis Ababa', 'Bahir Dar', 'Gondar', 'Lalibela', 'Axum', 'Harar'];
 
-prices.forEach(price => {
-    console.log("Price:", price, "ETB");
+cities.forEach((city, index) => {
+    console.log(`${index + 1}. ${city}`);
 });

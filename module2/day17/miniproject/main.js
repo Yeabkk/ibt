@@ -22,7 +22,6 @@ card.redeem(10);
 
 console.log(card.balance()); 
 
-// Holiday rule: double points
 const holiday = createLoyalty(
     etb => Math.floor(etb / 10) * 2
 );
