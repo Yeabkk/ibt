@@ -18,7 +18,7 @@
     border-radius: 5px;
     font-family: var(--font-family);
 }
-p{
+p,caption{
     color:aqua;
     font-size: 20px;
     background-color: black;
@@ -54,3 +54,60 @@ img{
     content: "This is after pseudo element";
     color: red;
 }
+table {
+    width: 100%;
+    background-color: white;
+    margin-top: 20px;
+}
+
+th ,caption{
+    background-color: #006b3f;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #447ca1;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #57449b;
+}
+
+tr:hover {
+    background-color: #30b979;
+}
+.color {
+    width: 200px;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+.green {
+    background-color: rgb(7, 137, 48);
+}
+
+.green:hover {
+    background-color: hsl(139, 90%, 40%);
+}
+
+.yellow {
+    background-color: rgb(252, 221, 9);
+}
+
+.yellow:hover {
+    background-color: hsl(52, 98%, 65%);
+}
+.red {
+    background-color: rgb(218, 18, 26);
+}
+
+.red:hover {
+    background-color: hsl(358, 85%, 58%);
+}
+/* q3 if paragraph is target by element, a class and an ID.
+ Id will win because it is more spepsfic and close to the elament */
