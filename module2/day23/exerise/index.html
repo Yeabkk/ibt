@@ -9,7 +9,17 @@
 <body>
 <header>
 <h1 id="h1">Sheger Transit</h1>
-<input id="search" placeholder="Search routs..." />
+<div class="header-controls">
+    <input id="search" placeholder="Search routes..." />
+    <label for="sort">Sort routes</label>
+    <select id="sort">
+        <option value="default">Default order</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+        <option value="name-asc">Name: A to Z</option>
+        <option value="name-desc">Name: Z to A</option>
+    </select>
+</div>
 </header>
 <main id="main">
 <section id="routes">
