@@ -2,7 +2,7 @@
 
 :root {
 	--ink: #182a26;
-	--muted: #68756f;
+	--muted: #52615a;
 	--paper: #f7f7f2;
 	--white: #fffefa;
 	--line: #d9ded5;
@@ -44,9 +44,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .hero-copy h1 em { color: var(--green); font-weight: 500; }
 .hero-description { max-width: 440px; margin: 25px 0 28px; color: #56645d; font-size: 16px; line-height: 1.65; }
 .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
-.button { min-height: 46px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; gap: 20px; border: 0; border-radius: 3px; text-decoration: none; cursor: pointer; }
+.button { min-height: 46px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; gap: 20px; border: 0; border-radius: 3px; text-decoration: none; cursor: pointer; transition: background-color 0.15s ease, opacity 0.15s ease; }
 .button-dark { color: var(--white); background: var(--green-dark); }
 .button-dark:hover { background: var(--green); }
+.button:disabled, .button-dark:disabled { opacity: 0.6; cursor: not-allowed; }
 .hero-note { color: var(--muted); font-size: 12px; }
 .hero-art { position: relative; min-height: 360px; display: grid; place-items: center; animation: rise-in .7s .08s ease-out both; }
 .plate { position: absolute; width: min(30vw, 340px); aspect-ratio: 1; border-radius: 50%; }
@@ -89,7 +90,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .dish-card-top { width: 100%; display: flex; align-items: center; justify-content: space-between; }
 .dish-mark { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 50%; color: var(--green-dark); background: var(--lime); font-family: var(--font-display); font-size: 16px; }
 .spice-label { color: #9a492f; font-size: 11px; }
-.dish-card h2 { margin: 23px 0 7px; font-family: var(--font-display); font-size: 25px; font-weight: 500; }
+.dish-link { width: 100%; text-decoration: none; color: inherit; display: block; }
+.dish-link:hover h2 { color: var(--green); }
+.dish-card h2 { margin: 23px 0 7px; font-family: var(--font-display); font-size: 25px; font-weight: 500; transition: color 0.15s ease; }
 .dish-card p { margin: 0 0 17px; color: var(--muted); font-size: 13px; }
 .dish-card-bottom { width: 100%; margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .empty-state, .status-panel, .error-panel { padding: 30px; border: 1px solid var(--line); background: var(--white); }
@@ -110,7 +113,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .cart-line h2 { margin: 0 0 5px; font-family: var(--font-display); font-size: 20px; font-weight: 500; }
 .cart-line p { margin: 0; color: var(--muted); font-size: 12px; }
 .quantity-control { display: flex; align-items: center; gap: 10px; }
-.quantity-control button { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 50%; color: var(--green); background: var(--white); cursor: pointer; }
+.quantity-control button { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--green); background: var(--white); cursor: pointer; font-size: 16px; font-weight: 600; line-height: 1; transition: background-color 0.15s ease, border-color 0.15s ease; }
+.quantity-control button:hover { border-color: var(--green); background: #f0f4ee; }
+.quantity-control button:disabled { opacity: 0.4; cursor: not-allowed; }
 .cart-summary { align-self: start; padding: 20px; border: 1px solid var(--line); background: var(--white); }
 .cart-summary h2 { margin: 0 0 22px; font-family: var(--font-display); font-weight: 500; }
 .summary-total { margin: 15px 0 20px; padding-top: 15px; display: flex; justify-content: space-between; border-top: 1px solid var(--line); font-weight: 700; }
@@ -137,8 +142,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @keyframes shimmer { to { background-position-x: -200%; } }
 @media (max-width: 760px) {
 	.site-header { min-height: 72px; padding-inline: 18px; }
-	.site-nav { gap: 14px; }
-	.site-nav > a:not(.cart-nav) { display: none; }
+	.site-nav { gap: 16px; }
+	.site-nav a { font-size: 14px; font-weight: 500; }
 	.home-hero { padding: 46px 22px 35px; grid-template-columns: 1fr; gap: 8px; }
 	.hero-copy h1 { max-width: 520px; font-size: 54px; }
 	.hero-art { min-height: 280px; }
