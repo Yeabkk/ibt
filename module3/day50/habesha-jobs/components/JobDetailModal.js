@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   X,
   MapPin,
@@ -75,7 +76,7 @@ export default function JobDetailModal({
   const handleShare = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText(
-        window.location.origin + "?jobId=" + encodeURIComponent(id)
+        `${window.location.origin}/jobs/${encodeURIComponent(id)}`
       );
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
@@ -296,6 +297,13 @@ export default function JobDetailModal({
           </div>
 
           <div className="w-full sm:w-auto">
+            <Link
+              href={`/jobs/${encodeURIComponent(id)}`}
+              onClick={onClose}
+              className="mb-2 inline-flex w-full items-center justify-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 sm:mb-0 sm:mr-3 sm:w-auto"
+            >
+              Open full job page
+            </Link>
             {hasApplied ? (
               <div className="px-6 py-2.5 bg-emerald-100 text-emerald-800 rounded-xl font-bold text-xs flex items-center justify-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />

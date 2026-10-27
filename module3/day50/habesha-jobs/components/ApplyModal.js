@@ -25,6 +25,7 @@ export default function ApplyModal({
   onClose,
   onApplicationSuccess,
   onOpenDashboard,
+  user,
 }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -76,41 +77,74 @@ export default function ApplyModal({
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
+    if (user && user.role !== "jobSeeker") {
+      setErrors({ account: "Only job seeker accounts can apply to jobs." });
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate realistic 450ms network submission
-    setTimeout(() => {
-      const applicationRecord = {
-        jobId: job.id,
-        jobTitle: job.title,
-        company: job.company,
-        companyColor: job.companyColor,
-        applicantName: fullName.trim(),
-        applicantEmail: email.trim(),
-        applicantPhone: phone.trim(),
-        applicantLocation: currentLocation.trim(),
-        experienceYears,
-        resumeFileName: resumeName,
-        coverNote: coverNote.trim(),
-        referenceCode:
-          "HAB-" +
-          Math.floor(1000 + Math.random() * 9000) +
-          "-" +
-          new Date().getFullYear(),
-      };
+    const applicationRecord = {
+      jobId: job.id,
+      fullName: fullName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      location: currentLocation.trim(),
+      experience: experienceYears,
+      resumeFileName: resumeName,
+      coverNote: coverNote.trim(),
+    };
 
-      const saved = saveApplication(applicationRecord);
-      setIsSubmitting(false);
-      setSubmittedApp(saved || applicationRecord);
-
-      if (onApplicationSuccess) {
-        onApplicationSuccess(job.id, saved || applicationRecord);
+    try {
+      let saved;
+      if (user) {
+        const response = await fetch("/api/applications", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(applicationRecord),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          if (response.status === 422 && data.details) {
+            setErrors(
+              Object.fromEntries(
+                Object.entries(data.details).map(([field, messages]) => [field, messages[0]]),
+              ),
+            );
+          } else {
+            setErrors({ account: data.error || "Could not submit the application." });
+          }
+          return;
+        }
+        saved = data.application;
+      } else {
+        const demoRecord = {
+          jobId: job.id,
+          jobTitle: job.title,
+          company: job.company,
+          applicantName: applicationRecord.fullName,
+          applicantEmail: applicationRecord.email,
+          applicantPhone: applicationRecord.phone,
+          applicantLocation: applicationRecord.location,
+          experienceYears,
+          resumeFileName: resumeName,
+          coverNote: coverNote.trim(),
+          referenceCode: `HAB-${Math.floor(1000 + Math.random() * 9000)}-${new Date().getFullYear()}`,
+        };
+        saved = saveApplication(demoRecord) ?? demoRecord;
       }
-    }, 450);
+
+      setSubmittedApp(saved);
+      if (onApplicationSuccess) onApplicationSuccess(job.id, saved);
+    } catch {
+      setErrors({ account: "A network error prevented the application from being submitted." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleFileUpload = (e) => {
@@ -234,6 +268,12 @@ export default function ApplyModal({
           ) : (
             /* FORM STATE */
             <form onSubmit={handleSubmit} className="space-y-4">
+              {!user && (
+                <p className="rounded-lg border border-amber-200 bg-amber-50 p-2.5 text-xs text-amber-900">
+                  Demo mode: sign in as a job seeker to save this application to the database.
+                </p>
+              )}
+              {errors.account && <p className="text-xs text-rose-600">{errors.account}</p>}
               {/* Job mini summary card */}
               <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-center gap-3">
                 <div

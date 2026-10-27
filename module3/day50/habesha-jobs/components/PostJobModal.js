@@ -20,12 +20,12 @@ import {
   EMPLOYMENT_TYPES,
   EXPERIENCE_LEVELS,
 } from "@/lib/jobs-data";
-import { saveUserPostedJob } from "@/lib/storage";
 
 export default function PostJobModal({
   isOpen,
   onClose,
   onJobPosted,
+  user,
 }) {
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
@@ -45,6 +45,7 @@ export default function PostJobModal({
   const [errors, setErrors] = useState({});
   const [isSuccess, setIsSuccess] = useState(false);
   const [createdJob, setCreatedJob] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleClose = useCallback(() => {
     setIsSuccess(false);
@@ -79,9 +80,13 @@ export default function PostJobModal({
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
+    if (user?.role !== "employer") {
+      setErrors({ account: "Sign in with an employer account to post a listing." });
+      return;
+    }
 
     const requirements = requirementsInput
       .split("\n")
@@ -99,7 +104,7 @@ export default function PostJobModal({
       category,
       location,
       workplaceType,
-      type,
+      employmentType: type,
       salary: salary.trim(),
       experience,
       deadline: deadline.trim(),
@@ -118,12 +123,26 @@ export default function PostJobModal({
       tags: tags.length > 0 ? tags : ["Addis Ababa", "Urgent", "New"],
     };
 
-    const saved = saveUserPostedJob(newJobPayload);
-    setCreatedJob(saved);
-    setIsSuccess(true);
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newJobPayload),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setErrors({ account: data.error || "Could not publish this listing." });
+        return;
+      }
 
-    if (onJobPosted) {
-      onJobPosted(saved);
+      setCreatedJob(data.job);
+      setIsSuccess(true);
+      if (onJobPosted) onJobPosted(data.job);
+    } catch {
+      setErrors({ account: "A network error prevented this listing from being saved." });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -210,6 +229,12 @@ export default function PostJobModal({
           ) : (
             /* FORM STATE */
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+              {user?.role !== "employer" && (
+                <p className="rounded-lg border border-amber-200 bg-amber-50 p-2.5 text-amber-900">
+                  An authenticated employer account is required to publish a listing.
+                </p>
+              )}
+              {errors.account && <p className="text-rose-600">{errors.account}</p>}
               {/* Job Title & Company */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
@@ -436,10 +461,11 @@ export default function PostJobModal({
                 </button>
                 <button
                   type="submit"
+                  disabled={isSubmitting || user?.role !== "employer"}
                   className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md hover:shadow-emerald-600/20 transition-all cursor-pointer flex items-center gap-1.5"
                 >
                   <PlusCircle className="w-4 h-4" />
-                  <span>Publish Demo Listing</span>
+                  <span>{isSubmitting ? "Submitting..." : "Submit Listing for Review"}</span>
                 </button>
               </div>
             </form>

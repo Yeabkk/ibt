@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import DemoBanner from "@/components/DemoBanner";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -13,6 +13,7 @@ import PostJobModal from "@/components/PostJobModal";
 import DashboardModal from "@/components/DashboardModal";
 import PresentationModal from "@/components/PresentationModal";
 import Footer from "@/components/Footer";
+import { useAuth } from "@/components/AuthProvider";
 
 import { INITIAL_JOBS } from "@/lib/jobs-data";
 import {
@@ -22,22 +23,18 @@ import {
   getUserPostedJobs,
 } from "@/lib/storage";
 import {
-  Briefcase,
-  SlidersHorizontal,
   RotateCcw,
-  Sparkles,
   Inbox,
-  AlertCircle,
-  PlusCircle,
   CheckCircle2,
-  TrendingUp,
 } from "lucide-react";
 
 export default function Home() {
-  // Persistence state initialized cleanly via lazy initializers
-  const [savedJobIds, setSavedJobIds] = useState(() => getSavedJobIds());
-  const [applications, setApplications] = useState(() => getApplications());
-  const [userPostedJobs, setUserPostedJobs] = useState(() => getUserPostedJobs());
+  const { user, loading: authLoading, setUser } = useAuth();
+  const [jobs, setJobs] = useState(INITIAL_JOBS);
+  const [savedJobIds, setSavedJobIds] = useState([]);
+  const [applications, setApplications] = useState([]);
+  const [userPostedJobs, setUserPostedJobs] = useState([]);
+  const [jobsLoading, setJobsLoading] = useState(true);
 
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState("");
@@ -63,6 +60,79 @@ export default function Home() {
 
   const jobsSectionRef = useRef(null);
 
+  useEffect(() => {
+    let active = true;
+
+    async function loadJobs() {
+      try {
+        const response = await fetch("/api/jobs", { cache: "no-store" });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (active) setJobs(data.jobs ?? []);
+      } catch {
+        if (active) setJobs(INITIAL_JOBS);
+      } finally {
+        if (active) setJobsLoading(false);
+      }
+    }
+
+    loadJobs();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (authLoading) return;
+    let active = true;
+
+    async function loadAccountData() {
+      if (!user) {
+        setSavedJobIds(getSavedJobIds());
+        setApplications(getApplications());
+        setUserPostedJobs(getUserPostedJobs());
+        return;
+      }
+
+      setSavedJobIds([]);
+      setApplications([]);
+      setUserPostedJobs([]);
+
+      try {
+        if (user.role === "jobSeeker") {
+          const [savedResponse, applicationResponse] = await Promise.all([
+            fetch("/api/saved-jobs", { cache: "no-store" }),
+            fetch("/api/applications", { cache: "no-store" }),
+          ]);
+          if (!active) return;
+          if (savedResponse.ok) {
+            const data = await savedResponse.json();
+            setSavedJobIds(data.savedJobs.map((saved) => saved.jobId));
+          }
+          if (applicationResponse.ok) {
+            const data = await applicationResponse.json();
+            setApplications(data.applications);
+          }
+        }
+
+        if (user.role === "employer") {
+          const response = await fetch("/api/jobs?mine=true", { cache: "no-store" });
+          if (response.ok && active) {
+            const data = await response.json();
+            setUserPostedJobs(data.jobs);
+          }
+        }
+      } catch {
+        if (active) showToast("Could not load your account data.");
+      }
+    }
+
+    loadAccountData();
+    return () => {
+      active = false;
+    };
+  }, [authLoading, user]);
+
   // Show temporary toast notification
   const showToast = (message) => {
     setToastMessage(message);
@@ -73,8 +143,8 @@ export default function Home() {
 
   // Combine initial demo jobs and user-created demo jobs
   const allJobs = useMemo(() => {
-    return [...userPostedJobs, ...INITIAL_JOBS];
-  }, [userPostedJobs]);
+    return [...new Map([...userPostedJobs, ...jobs].map((job) => [job.id, job])).values()];
+  }, [jobs, userPostedJobs]);
 
   // Reactive filtering logic
   const filteredJobs = useMemo(() => {
@@ -160,28 +230,83 @@ export default function Home() {
   };
 
   // Toggle saved job with feedback
-  const handleToggleSave = (jobId) => {
+  const handleToggleSave = async (jobId) => {
+    if (user?.role === "jobSeeker") {
+      const isSaved = savedJobIds.includes(jobId);
+      const response = await fetch(
+        isSaved ? `/api/saved-jobs?jobId=${encodeURIComponent(jobId)}` : "/api/saved-jobs",
+        {
+          method: isSaved ? "DELETE" : "POST",
+          headers: isSaved ? undefined : { "Content-Type": "application/json" },
+          body: isSaved ? undefined : JSON.stringify({ jobId }),
+        },
+      );
+      if (!response.ok) {
+        showToast("Sign in as a job seeker to save jobs.");
+        return;
+      }
+      setSavedJobIds((current) =>
+        isSaved ? current.filter((id) => id !== jobId) : [...current, jobId],
+      );
+      showToast(isSaved ? "Job removed from saved jobs." : "Job saved to your account.");
+      return;
+    }
+
+    if (user) {
+      showToast("Saved jobs are available to job seekers.");
+      return;
+    }
+
     const result = toggleSavedJobId(jobId);
     setSavedJobIds(result.list);
-    showToast(
-      result.isSaved
-        ? "Job saved to your bookmarks!"
-        : "Job removed from saved bookmarks."
-    );
+    showToast(result.isSaved ? "Job saved in this browser." : "Job removed from saved jobs.");
   };
 
-  // Handle application success
-  const handleApplicationSuccess = (jobId, appData) => {
-    setApplications(getApplications());
+  async function handleApplicationSuccess() {
+    if (user?.role !== "jobSeeker") {
+      setApplications(getApplications());
+      showToast("Demo application saved in this browser.");
+      return;
+    }
+    const response = await fetch("/api/applications", { cache: "no-store" });
+    if (response.ok) {
+      const data = await response.json();
+      setApplications(data.applications);
+    }
     showToast("Application submitted successfully!");
-  };
+  }
 
-  // Handle job posted
   const handleJobPosted = (newJob) => {
-    setUserPostedJobs(getUserPostedJobs());
-    showToast("Your job listing has been published to the feed!");
+    setUserPostedJobs((current) => [newJob, ...current.filter((job) => job.id !== newJob.id)]);
+    showToast("Your listing was submitted for administrator review.");
     scrollToJobs();
   };
+
+  const handleOpenPostJob = () => {
+    if (!user) {
+      window.location.href = "/register?role=employer";
+      return;
+    }
+    if (user.role !== "employer") {
+      showToast("Only employer accounts can post jobs.");
+      return;
+    }
+    setIsPostJobOpen(true);
+  };
+
+  const handleOpenDashboard = (tab = "saved") => {
+    if (user) {
+      window.location.href = user.role === "admin" ? "/admin" : "/dashboard";
+      return;
+    }
+    setDashboardConfig({ isOpen: true, tab });
+  };
+
+  async function handleSignOut() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setUser(null);
+    window.location.href = "/";
+  }
 
   const scrollToJobs = () => {
     if (jobsSectionRef.current) {
@@ -215,15 +340,16 @@ export default function Home() {
       <Navbar
         savedCount={savedJobIds.length}
         applicationCount={applications.length}
-        onOpenPostJob={() => setIsPostJobOpen(true)}
-        onOpenDashboard={(tab = "saved") =>
-          setDashboardConfig({ isOpen: true, tab })
-        }
+        onOpenPostJob={handleOpenPostJob}
+        onOpenDashboard={handleOpenDashboard}
         onSelectCategory={(catId) => {
           setSelectedCategory(catId);
           scrollToJobs();
         }}
         onScrollToJobs={scrollToJobs}
+        user={user}
+        authLoading={authLoading}
+        onSignOut={handleSignOut}
       />
 
       {/* Hero Section */}
@@ -307,6 +433,7 @@ export default function Home() {
             ))}
           </div>
         )}
+        {jobsLoading && <p className="mt-4 text-center text-xs text-slate-500">Loading current listings...</p>}
       </main>
 
       {/* Detail Modal */}
@@ -330,6 +457,7 @@ export default function Home() {
         isOpen={Boolean(selectedJobForApply)}
         onClose={() => setSelectedJobForApply(null)}
         onApplicationSuccess={handleApplicationSuccess}
+        user={user}
         onOpenDashboard={(tab) => setDashboardConfig({ isOpen: true, tab })}
       />
 
@@ -338,6 +466,7 @@ export default function Home() {
         isOpen={isPostJobOpen}
         onClose={() => setIsPostJobOpen(false)}
         onJobPosted={handleJobPosted}
+        user={user}
       />
 
       {/* Dashboard Modal */}
@@ -373,8 +502,8 @@ export default function Home() {
           setSelectedCategory(catId);
           scrollToJobs();
         }}
-        onOpenPostJob={() => setIsPostJobOpen(true)}
-        onOpenDashboard={(tab) => setDashboardConfig({ isOpen: true, tab })}
+        onOpenPostJob={handleOpenPostJob}
+        onOpenDashboard={handleOpenDashboard}
         onScrollToTop={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       />
     </div>

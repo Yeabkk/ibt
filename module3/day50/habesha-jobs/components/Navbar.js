@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Briefcase,
   Bookmark,
@@ -19,6 +20,9 @@ export default function Navbar({
   onOpenDashboard,
   onSelectCategory,
   onScrollToJobs,
+  user = null,
+  authLoading = false,
+  onSignOut,
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -129,6 +133,24 @@ export default function Navbar({
               <PlusCircle className="w-4 h-4" />
               <span>Post a Job</span>
             </button>
+            {authLoading ? (
+              <span className="text-xs text-slate-400">Checking account...</span>
+            ) : user ? (
+              <div className="flex items-center gap-2">
+                <span className="hidden xl:inline max-w-32 truncate text-xs text-slate-500">{user.name}</span>
+                <button
+                  onClick={onSignOut}
+                  className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                >
+                  Sign out
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link href="/login" className="rounded-lg px-2 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700">Sign in</Link>
+                <Link href="/register" className="rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50">Register</Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Hamburger */}
@@ -228,6 +250,19 @@ export default function Navbar({
                 <PlusCircle className="w-4 h-4" />
                 Post a Job Listing
               </button>
+              {user ? (
+                <button
+                  onClick={onSignOut}
+                  className="w-full py-2.5 text-sm font-semibold text-slate-700"
+                >
+                  Sign out {user.name}
+                </button>
+              ) : (
+                <div className="flex gap-2 pt-2">
+                  <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="flex-1 rounded-lg border border-slate-200 py-2 text-center text-sm font-semibold text-slate-700">Sign in</Link>
+                  <Link href="/register" onClick={() => setMobileMenuOpen(false)} className="flex-1 rounded-lg bg-slate-950 py-2 text-center text-sm font-semibold text-white">Register</Link>
+                </div>
+              )}
             </div>
           </div>
         )}

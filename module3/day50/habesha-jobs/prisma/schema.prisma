@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  role         String        @default("jobSeeker")
+  createdAt    DateTime      @default(now())
+  jobs         Job[]
+  applications Application[]
+  savedJobs    SavedJob[]
+  sessions     Session[]
+}
+
+model Job {
+  id               String        @id @default(cuid())
+  title            String
+  company          String
+  companyLogoText  String        @default("")
+  companyColor     String        @default("#059669")
+  category         String
+  location         String
+  workplaceType    String
+  employmentType   String
+  experience       String
+  salary           String
+  deadline         String
+  description      String
+  postedDate       String        @default("Just now")
+  applicantsCount  Int           @default(0)
+  responsibilities String        @default("[]")
+  requirements     String        @default("[]")
+  benefits         String        @default("[]")
+  tags             String        @default("[]")
+  featured         Boolean       @default(false)
+  urgent           Boolean       @default(false)
+  approvalStatus   String        @default("pending")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  employerId       String?
+  employer         User?         @relation(fields: [employerId], references: [id], onDelete: SetNull)
+  applications     Application[]
+  savedJobs        SavedJob[]
+
+  @@index([approvalStatus])
+  @@index([category])
+  @@index([location])
+  @@index([employerId])
+}
+
+model Application {
+  id             String   @id @default(cuid())
+  referenceCode  String   @unique
+  userId         String
+  jobId          String?
+  jobTitle       String
+  company        String
+  fullName       String
+  email          String
+  phone          String
+  location       String
+  experience     String
+  resumeFileName String?
+  coverNote      String?
+  status         String   @default("submitted")
+  createdAt      DateTime @default(now())
+  applicant      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job            Job?     @relation(fields: [jobId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([jobId, createdAt])
+  @@index([status])
+  @@unique([userId, jobId])
+}
+
+model SavedJob {
+  id        String   @id @default(cuid())
+  userId    String
+  jobId     String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@index([jobId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+}
